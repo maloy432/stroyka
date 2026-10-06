@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TASHKENT ESTATE — Продажа домов, квартир и коммерческой недвижимости в Ташкенте</title>
+  <meta name="description" content="Подберем дом, квартиру или коммерческое помещение в Ташкенте за 24 часа без скрытых комиссий. 250+ проверенных объектов, 100% гарантия юридической чистоты.">
+  <meta property="og:title" content="TASHKENT ESTATE | Элитная недвижимость Ташкента">
+  <meta property="og:description" content="Дома, квартиры и коммерция в Ташкенте без скрытых комиссий. +998 77 741 50 04">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN with customized theme -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#0F172A',      // Slate 900
+              accent: '#2563EB',    // Sapphire Blue
+              emerald: '#059669',   // Emerald Green
+              telegram: '#229ED9',  // Telegram Blue
+              bg: '#F8FAFC',        // Slate 50
+              card: '#FFFFFF',
+              text: '#1E293B',      // Slate 800
+              muted: '#64748B',     // Slate 500
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Leaflet CSS for Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Modular Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#F8FAFC] text-[#1E293B] antialiased selection:bg-blue-600 selection:text-white pb-20 md:pb-0 page-entrance">
+
+  <!-- ========================================== -->
+  <!-- БЛОК 0: STICKY HEADER (ШАПКА)               -->
+  <!-- ========================================== -->
+  <header id="siteHeader" class="sticky top-0 z-40 w-full glass-nav border-b border-slate-800/90 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="headerContainer" class="flex items-center justify-between h-20 transition-all duration-300">
+        
+        <!-- Brand Logo -->
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-blue-600 to-emerald-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300">
+            <i data-lucide="building-2" class="w-6 h-6"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-xl font-extrabold tracking-tight text-white group-hover:text-blue-400 transition-colors">TASHKENT ESTATE</span>
+            <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-widest -mt-0.5">Дома & Квадраты</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-200">
+          <a href="#catalog" class="hover:text-blue-400 transition-colors">Каталог</a>
+          <a href="#services" class="hover:text-blue-400 transition-colors">Услуги</a>
+          <a href="#about" class="hover:text-blue-400 transition-colors">О нас</a>
+          <a href="#calculator" class="hover:text-blue-400 transition-colors">Калькулятор</a>
+          <a href="#contacts" class="hover:text-blue-400 transition-colors">Контакты</a>
+        </nav>
+
+        <!-- Right Header Controls: Currency, Wishlist, Phones & Action Button -->
+        <div class="flex items-center gap-2 sm:gap-3.5">
+          
+          <!-- Currency Switcher (USD / UZS) -->
+          <div class="inline-flex p-1 rounded-xl bg-slate-800/90 border border-slate-700/80 shadow-inner">
+            <button id="headerCurrUsd" onclick="setCurrency('USD')" class="px-2.5 py-1 text-xs font-bold rounded-lg transition-all duration-200 bg-blue-600 text-white shadow">
+              USD $
+            </button>
+            <button id="headerCurrUzs" onclick="setCurrency('UZS')" class="px-2.5 py-1 text-xs font-bold rounded-lg transition-all duration-200 text-slate-300 hover:text-white">
+              UZS сум
+            </button>
+          </div>
+
+          <!-- Wishlist Trigger Button -->
+          <button onclick="openWishlistModal()" title="Избранные объекты" class="relative w-10 h-10 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-slate-700/80 text-slate-200 hover:text-rose-400 flex items-center justify-center transition-all duration-200">
+            <i data-lucide="heart" class="w-4 h-4"></i>
+            <span id="headerWishlistBadge" class="hidden absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 bg-rose-500 text-white text-[10px] font-extrabold rounded-full flex items-center justify-center border-2 border-slate-900 shadow">
+              0
+            </span>
+          </button>
+
+          <!-- Desktop Phones -->
+          <div class="hidden xl:flex flex-col text-right pl-1">
+            <a href="tel:+998777415004" class="text-xs font-bold text-white hover:text-blue-400 transition-colors flex items-center justify-end gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+              +998 77 741 50 04
+            </a>
+            <a href="tel:+998777415004" class="text-[11px] font-semibold text-slate-300 hover:text-blue-400 transition-colors">
+              +998 77 741 50 04
+            </a>
+          </div>
+
+          <!-- Telegram Quick Button (Desktop) -->
+          <a href="https://t.me/kewentor" target="_blank" rel="noopener noreferrer" title="Написать в Telegram" class="hidden md:flex w-10 h-10 rounded-xl bg-[#229ED9]/20 border border-[#229ED9]/40 hover:bg-[#229ED9] text-[#229ED9] hover:text-white items-center justify-center transition-all duration-200 shadow-sm">
+            <i data-lucide="send" class="w-4 h-4"></i>
+          </a>
+
+          <!-- Call Request Modal Trigger (Desktop) -->
+          <button onclick="openCallbackModal()" class="hidden md:inline-flex px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-blue-600/30 hover:shadow-blue-500/50">
+            Заказать звонок
+          </button>
+
+          <!-- Mobile Hamburger Button -->
+          <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenu" class="hidden lg:hidden bg-slate-900 border-b border-slate-800 px-4 pt-3 pb-6 space-y-3">
+      <a href="#catalog" class="block py-2 text-base font-semibold text-slate-200 hover:text-blue-400">Каталог объектов</a>
+      <a href="#services" class="block py-2 text-base font-semibold text-slate-200 hover:text-blue-400">Услуги</a>
+      <a href="#about" class="block py-2 text-base font-semibold text-slate-200 hover:text-blue-400">О нас</a>
+      <a href="#calculator" class="block py-2 text-base font-semibold text-slate-200 hover:text-blue-400">Калькулятор стоимости</a>
+      <a href="#contacts" class="block py-2 text-base font-semibold text-slate-200 hover:text-blue-400">Контакты</a>
+      
+      <div class="pt-4 border-t border-slate-800 space-y-2">
+        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Телефоны отдела продаж:</p>
+        <a href="tel:+998777415004" class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="phone" class="w-4 h-4 text-emerald-400"></i>
+          +998 77 741 50 04
+        </a>
+        <a href="tel:+998777415004" class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="phone" class="w-4 h-4 text-emerald-400"></i>
+          +998 77 741 50 04
+        </a>
+        <div class="pt-2 flex gap-2">
+          <button onclick="openCallbackModal()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-semibold text-sm">
+            Заказать звонок
+          </button>
+          <a href="https://t.me/kewentor" target="_blank" rel="noopener noreferrer" class="flex-1 py-3 bg-[#229ED9] text-white rounded-xl font-semibold text-sm text-center flex items-center justify-center gap-1.5">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            Telegram
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ========================================== -->
+  <!-- БЛОК 1: HERO SECTION (ГЛАВНЫЙ ЭКРАН)       -->
+  <!-- ========================================== -->
+  <section id="hero" class="relative bg-[#0F172A] hero-bg-wrapper text-white pt-14 pb-20 lg:pt-20 lg:pb-28 overflow-hidden">
+    
+    <!-- Dark Background Safeguard Overlay -->
+    <div class="absolute inset-0 bg-[#0F172A]/90 bg-pattern-dots pointer-events-none z-0"></div>
+
+    <!-- Ambient Glowing Highlights -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-500/25 rounded-full blur-3xl pointer-events-none z-0"></div>
+    <div class="absolute bottom-10 right-10 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none z-0"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Top Trust Badge -->
+      <div class="hero-anim-1 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/90 border border-slate-700/90 backdrop-blur text-sm font-semibold text-amber-300 mb-6 shadow-2xl">
+        <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping inline-block"></span>
+        🔥 Проверенная база недвижимости Ташкента 2026
+      </div>
+
+      <!-- H1 Main Headline with high contrast -->
+      <h1 class="hero-anim-2 text-3xl sm:text-4xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight lg:leading-[1.15] max-w-4xl mb-6 drop-shadow-md">
+        Подберем дом, квартиру или коммерческое помещение в Ташкенте <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-emerald-400">за 24 часа</span> без скрытых комиссий
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="hero-anim-3 text-base sm:text-lg lg:text-xl text-slate-200 max-w-3xl leading-relaxed mb-10 font-normal drop-shadow">
+        Более 250 закрытых и открытых объектов: от премиальных участков в Мирзо-Улугбекском районе до готового арендного бизнеса в центре. Юридическая чистота и проверка кадастра 100%.
+      </p>
+
+      <!-- Interactive Mini-Filter Card directly in Hero -->
+      <div class="hero-anim-4 bg-slate-900/95 border border-slate-700 rounded-2xl p-4 sm:p-6 max-w-5xl shadow-2xl mb-10 backdrop-blur-xl">
+        
+        <!-- Tabs: Купить | Продать -->
+        <div class="flex items-center gap-2 mb-4">
+          <div class="inline-flex p-1 rounded-xl bg-slate-800 border border-slate-700">
+            <button id="heroTabBuy" class="px-5 py-2 rounded-lg text-sm font-bold bg-white text-slate-900 shadow-sm transition-all">
+              Купить
+            </button>
+            <button id="heroTabSell" class="px-5 py-2 rounded-lg text-sm font-bold text-slate-300 hover:text-white transition-all">
+              Продать
+            </button>
+          </div>
+          <span class="text-xs text-slate-300 hidden sm:inline-block ml-2 font-medium">
+            ● Прямые собственники & новостройки
+          </span>
+        </div>
+
+        <!-- Filter Selectors Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          
+          <!-- Selector 1: Type -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Тип объекта</label>
+            <div class="relative">
+              <select id="heroType" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-white font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none cursor-pointer">
+                <option value="all">Все типы</option>
+                <option value="houses">Дом / Ҳовли / Участок</option>
+                <option value="apartments">Квартира в новостройке</option>
+                <option value="commercial">Коммерческая недвижимость</option>
+              </select>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none"></i>
+            </div>
+          </div>
+
+          <!-- Selector 2: District -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Район города</label>
+            <div class="relative">
+              <select id="heroDistrict" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-white font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none cursor-pointer">
+                <option value="all">Все районы Ташкента</option>
+                <option value="mirabad">Мирабадский р-н (Центр)</option>
+                <option value="yakkasaray">Яккасарайский р-н</option>
+                <option value="mirzo-ulugbek">Мирзо-Улугбекский р-н</option>
+                <option value="yunusabad">Юнусабадский р-н</option>
+                <option value="shaykhantakhur">Шайхантахур (Tashkent City)</option>
+                <option value="chilanzar">Чиланзарский р-н</option>
+              </select>
+              <i data-lucide="map-pin" class="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none"></i>
+            </div>
+          </div>
+
+          <!-- Selector 3: Budget -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5 uppercase tracking-wider">Бюджет ($)</label>
+            <div class="relative">
+              <select id="heroBudget" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-white font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none cursor-pointer">
+                <option value="all">Любой бюджет</option>
+                <option value="up100">До $100,000</option>
+                <option value="100to200">$100,000 — $200,000</option>
+                <option value="200to350">$200,000 — $350,000</option>
+                <option value="from350">От $350,000+</option>
+              </select>
+              <i data-lucide="dollar-sign" class="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none"></i>
+            </div>
+          </div>
+
+          <!-- Search Button -->
+          <div class="flex items-end">
+            <button id="heroSearchBtn" class="w-full btn-touch bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl px-4 py-3 flex items-center justify-center gap-2 shadow-lg shadow-blue-600/40 transition-all duration-200">
+              <span>Найти варианты</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="hero-anim-5 flex flex-wrap items-center gap-4 mb-14">
+        <!-- Main CTA -->
+        <a href="#catalog" class="btn-touch px-7 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-extrabold text-sm sm:text-base flex items-center gap-2.5 shadow-xl transition-all duration-200">
+          <i data-lucide="layers" class="w-5 h-5 text-blue-600"></i>
+          <span>Смотреть каталог объектов</span>
+        </a>
+
+        <!-- Secondary CTA: Direct Telegram to @kewentor -->
+        <a href="https://t.me/kewentor?text=Здравствуйте!%20Хочу%20получить%20консультацию%20по%20подбору%20недвижимости%20в%20Ташкенте." target="_blank" rel="noopener noreferrer" class="btn-touch px-7 py-3.5 rounded-xl bg-[#229ED9] hover:bg-[#1c8ec4] text-white font-bold text-sm sm:text-base flex items-center gap-2.5 shadow-xl shadow-[#229ED9]/30 transition-all duration-200">
+          <i data-lucide="send" class="w-5 h-5"></i>
+          <span>Написать риелтору в Telegram</span>
+        </a>
+      </div>
+
+      <!-- Trust Bar under Hero -->
+      <div class="hero-anim-6 pt-8 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-6 text-slate-300">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+            <i data-lucide="award" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="font-bold text-white text-base">10+ лет на рынке</div>
+            <div class="text-xs text-slate-400">Глубокое знание всех районов Ташкента</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+            <i data-lucide="badge-percent" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="font-bold text-white text-base">0% скрытых платежей</div>
+            <div class="text-xs text-slate-400">Прозрачный договор без комиссии покупателю новостроек</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 shrink-0">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="font-bold text-white text-base">Юр. сопровождение в подарок</div>
+            <div class="text-xs text-slate-400">Полная проверка кадастра и нотариальное оформление</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================== -->
+  <!-- БЛОК 2: PORTFOLIO / CATALOG (ВИТРИНА)      -->
+  <!-- ========================================== -->
+  <section id="catalog" class="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
+    
+    <!-- Section Header & Controls -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+          Каталог недвижимости Ташкента
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+          Актуальные объекты в продаже
+        </h2>
+        <p class="mt-2 text-base text-slate-500 max-w-2xl">
+          Только проверенные варианты со свежими фотографиями и полным пакетом документов.
+        </p>
+      </div>
+
+      <!-- Quick filters: Currency + District Select -->
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Catalog Currency Switcher -->
+        <div class="inline-flex p-1 rounded-xl bg-slate-100 border border-slate-200">
+          <button id="catCurrUsd" onclick="setCurrency('USD')" class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-white text-slate-900 shadow-sm">
+            USD $
+          </button>
+          <button id="catCurrUzs" onclick="setCurrency('UZS')" class="px-3 py-1.5 text-xs font-bold rounded-lg transition-all text-slate-600 hover:text-slate-900">
+            UZS сум
+          </button>
+        </div>
+
+        <!-- District dropdown quick filter -->
+        <div class="flex items-center gap-2">
+          <select id="catalogDistrictSelect" class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 shadow-sm focus:ring-2 focus:ring-blue-500 cursor-pointer">
+            <option value="all">Все районы города</option>
+            <option value="mirabad">Мирабадский район</option>
+            <option value="yakkasaray">Яккасарайский район</option>
+            <option value="mirzo-ulugbek">Мирзо-Улугбекский район</option>
+            <option value="yunusabad">Юнусабадский район</option>
+            <option value="shaykhantakhur">Шайхантахурский район</option>
+            <option value="chilanzar">Чиланзарский район</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Tabs + Favorites Tab -->
+    <div class="flex flex-wrap items-center gap-2 mb-10 p-1.5 bg-slate-200/70 rounded-2xl max-w-fit">
+      <button data-category="all" class="category-tab px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-900 text-white shadow-md transition-all">
+        Все объекты
+      </button>
+      <button data-category="houses" class="category-tab px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-600 hover:bg-slate-100 transition-all">
+        Дома и участки (Ҳовли)
+      </button>
+      <button data-category="apartments" class="category-tab px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-600 hover:bg-slate-100 transition-all">
+        Квартиры и новостройки
+      </button>
+      <button data-category="commercial" class="category-tab px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-600 hover:bg-slate-100 transition-all">
+        Коммерческая
+      </button>
+      <button data-category="favorites" class="category-tab px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-1.5">
+        <i data-lucide="heart" class="w-3.5 h-3.5 text-rose-500"></i>
+        <span>Избранное</span>
+        <span id="tabWishlistBadge" class="ml-1 px-1.5 py-0.2 bg-rose-100 text-rose-600 rounded-full text-[11px] font-extrabold">0</span>
+      </button>
+    </div>
+
+    <!-- Catalog Grid Container (Dynamically rendered via JS) -->
+    <div id="catalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
+      <!-- Injected by JavaScript -->
+    </div>
+
+    <!-- CTA Box under Catalog -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-slate-800 to-blue-950 p-8 sm:p-12 text-white shadow-2xl border border-slate-700">
+      <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div class="max-w-2xl text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 border border-blue-400/30">
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+            Закрытый каталог риелтора
+          </div>
+          <h3 class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3">
+            Не нашли нужный вариант?
+          </h3>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            Более 150 объектов не публикуются в открытом доступе по просьбе владельцев (элитные особняки, закрытые продажи ЖК, готовые доходные помещения).
+          </p>
+        </div>
+
+        <div class="shrink-0">
+          <a href="https://t.me/kewentor?text=Здравствуйте!%20Отправьте,%20пожалуйста,%20закрытую%20базу%20объектов%20в%20Ташкенте." target="_blank" rel="noopener noreferrer" class="btn-touch px-8 py-4 rounded-2xl bg-[#229ED9] hover:bg-[#1a8bc4] text-white font-extrabold text-base flex items-center justify-center gap-3 shadow-xl shadow-[#229ED9]/40 transition-all duration-200">
+            <i data-lucide="send" class="w-5 h-5"></i>
+            <span>Получить закрытую базу в Telegram</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ========================================== -->
+  <!-- БЛОК 3: SERVICES (НАШИ УСЛУГИ)             -->
+  <!-- ========================================== -->
+  <section id="services" class="py-16 sm:py-24 bg-white border-y border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+          Профессиональный сервис
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+          Чем мы можем вам помочь
+        </h2>
+        <p class="mt-3 text-base text-slate-500">
+          Полный цикл сделок с недвижимостью без рисков и очередей в госорганах.
+        </p>
+      </div>
+
+      <!-- Services Grid (4 Cards in responsive layout) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Service 1 -->
+        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-7 flex flex-col justify-between hover:bg-white hover:border-blue-500 hover:shadow-xl transition-all duration-300 group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-blue-600/10 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+              <i data-lucide="search" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-3">
+              Подбор и покупка
+            </h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Анализ рынка, поиск объектов под ваш бюджет, организация показов в удобное время на нашем автотранспорте с личным водителем.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-slate-200 text-xs font-bold text-blue-600 flex items-center gap-1">
+            <span>Бесплатный подбор</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-7 flex flex-col justify-between hover:bg-white hover:border-emerald-500 hover:shadow-xl transition-all duration-300 group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-600/10 text-emerald-600 flex items-center justify-center mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+              <i data-lucide="trending-up" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-3">
+              Срочная продажа и маркетинг
+            </h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Профессиональная фото/видеосъемка, запуск таргетированной рекламы, продвижение в Telegram и закрытых риелторских базах Ташкента.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-slate-200 text-xs font-bold text-emerald-600 flex items-center gap-1">
+            <span>Продажа от 7 дней</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-7 flex flex-col justify-between hover:bg-white hover:border-amber-500 hover:shadow-xl transition-all duration-300 group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-amber-600/10 text-amber-600 flex items-center justify-center mb-6 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300">
+              <i data-lucide="briefcase" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-3">
+              Коммерческая недвижимость
+            </h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Расчет окупаемости (ROI), подбор локаций с высоким пешеходным трафиком, продажа и аренда готового доходного бизнеса.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-slate-200 text-xs font-bold text-amber-600 flex items-center gap-1">
+            <span>ROI до 14% годовых</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-7 flex flex-col justify-between hover:bg-white hover:border-purple-500 hover:shadow-xl transition-all duration-300 group">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-purple-600/10 text-purple-600 flex items-center justify-center mb-6 group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300">
+              <i data-lucide="file-check-2" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-3">
+              Проверка кадастра и юр. чистоты
+            </h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Проверка на аресты, залоги, доли несовершеннолетних, составление предварительного договора и сопровождение у нотариуса.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-slate-200 text-xs font-bold text-purple-600 flex items-center gap-1">
+            <span>100% гарантия чистоты</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================== -->
+  <!-- БЛОК 4: ABOUT US (О НАС / ДОВЕРИЕ)         -->
+  <!-- ========================================== -->
+  <section id="about" class="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Content -->
+      <div class="lg:col-span-7">
+        <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-600 mb-3">
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+          Опыт & Репутация
+        </div>
+        
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight mb-6">
+          Ваш надежный партнер на рынке Ташкента
+        </h2>
+
+        <p class="text-base sm:text-lg text-slate-600 leading-relaxed mb-6 font-normal">
+          «Мы знаем реальную стоимость каждой сотки и каждого квадратного метра в махаллях Ташкента. Мы не просто показываем объекты, а защищаем финансовые и юридические интересы клиента на каждом этапе — от первого звонка до подписания нотариального договора и передачи ключей.»
+        </p>
+
+        <!-- Bullet Checklist -->
+        <div class="space-y-4 mb-8">
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <span class="text-sm sm:text-base font-semibold text-slate-800">
+              Собственная база из 300+ прямых собственников без посредников
+            </span>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <span class="text-sm sm:text-base font-semibold text-slate-800">
+              Бесплатная консультация юриста перед внесением задатка и проверкой кадастра
+            </span>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <span class="text-sm sm:text-base font-semibold text-slate-800">
+              Персональный комфортабельный автотранспорт для выездных просмотров по городу
+            </span>
+          </div>
+        </div>
+
+        <!-- Phone contact in About -->
+        <div class="p-4 bg-blue-50/70 border border-blue-100 rounded-2xl flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Прямой контакт с экспертом:</span>
+            <div class="flex flex-wrap gap-x-4 gap-y-1">
+              <a href="tel:+998777415004" class="text-sm sm:text-base font-extrabold text-blue-600 hover:underline">+998 77 741 50 04</a>
+              <a href="tel:+998777415004" class="text-sm sm:text-base font-extrabold text-blue-600 hover:underline">+998 77 741 50 04</a>
+            </div>
+          </div>
+          <a href="https://t.me/kewentor" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-[#229ED9] text-white text-xs font-bold rounded-xl flex items-center gap-1.5 hover:bg-[#1c8ec4] transition">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            @kewentor
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Right Content: KPI Grid with Counter-Up Animation -->
+      <div class="lg:col-span-5">
+        <div id="counterSection" class="grid grid-cols-2 gap-4">
+          
+          <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-100 card-shadow text-center">
+            <div class="stat-counter text-4xl sm:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 mb-2" data-target="350" data-suffix="+">
+              0
+            </div>
+            <div class="text-xs sm:text-sm font-semibold text-slate-600">
+              Успешно закрытых сделок
+            </div>
+          </div>
+
+          <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-100 card-shadow text-center">
+            <div class="stat-counter text-4xl sm:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 mb-2" data-target="7" data-suffix=" дней">
+              0
+            </div>
+            <div class="text-xs sm:text-sm font-semibold text-slate-600">
+              Средний срок продажи объекта
+            </div>
+          </div>
+
+          <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-100 card-shadow text-center">
+            <div class="stat-counter text-4xl sm:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500 mb-2" data-target="0" data-suffix="">
+              0
+            </div>
+            <div class="text-xs sm:text-sm font-semibold text-slate-600">
+              Оспоренных договоров за все время
+            </div>
+          </div>
+
+          <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-100 card-shadow text-center">
+            <div class="stat-counter text-4xl sm:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-500 mb-2" data-target="0" data-prefix="$">
+              $0
+            </div>
+            <div class="text-xs sm:text-sm font-semibold text-slate-600">
+              Комиссия для покупателей новостроек
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================== -->
+  <!-- БЛОК 5: LEAD MAGNET / КАЛЬКУЛЯТОР         -->
+  <!-- ========================================== -->
+  <section id="calculator" class="py-16 sm:py-24 bg-slate-900 text-white relative overflow-hidden">
+    <!-- Ambient backdrops -->
+    <div class="absolute -top-20 -left-20 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-emerald-500/20 rounded-full blur-3xl"></div>
+
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-10">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3 border border-emerald-500/30">
+          <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+          Бесплатный экспресс-расчет
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+          Хотите узнать реальную рыночную стоимость вашей недвижимости?
+        </h2>
+        <p class="text-slate-300 text-base max-w-2xl mx-auto">
+          Ответьте на 3 вопроса и получите бесплатную оценку от эксперта в течение 15 минут.
+        </p>
+      </div>
+
+      <!-- Calculator Form Box -->
+      <div class="bg-slate-800/90 border border-slate-700/80 backdrop-blur-xl rounded-3xl p-6 sm:p-10 shadow-2xl">
+        <form id="calculatorForm" onsubmit="event.preventDefault();" class="space-y-6">
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            
+            <!-- Selector: Object Type -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">1. Тип объекта</label>
+              <div class="relative">
+                <select id="calcType" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3.5 text-sm text-white font-semibold focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer">
+                  <option value="apartment_new">Квартира в новостройке</option>
+                  <option value="apartment_old">Квартира во вторичном фонде</option>
+                  <option value="house">Дом / Ҳовли / Коттедж</option>
+                  <option value="land">Земельный участок</option>
+                  <option value="commercial">Офис / Коммерческое помещение</option>
+                </select>
+                <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-4 top-4 pointer-events-none"></i>
+              </div>
+            </div>
+
+            <!-- Selector: District -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">2. Район Ташкента</label>
+              <div class="relative">
+                <select id="calcDistrict" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3.5 text-sm text-white font-semibold focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer">
+                  <option value="mirabad">Мирабадский район (Центр)</option>
+                  <option value="yakkasaray">Яккасарайский район</option>
+                  <option value="mirzo-ulugbek">Мирзо-Улугбекский район</option>
+                  <option value="shaykhantakhur">Шайхантахурский район</option>
+                  <option value="yunusabad">Юнусабадский район</option>
+                  <option value="chilanzar">Чиланзарский район</option>
+                  <option value="uchtepa">Учтепинский район</option>
+                  <option value="sergeli">Сергелийский район</option>
+                  <option value="yashnabad">Яшнабадский район</option>
+                </select>
+                <i data-lucide="map-pin" class="w-4 h-4 text-slate-400 absolute right-4 top-4 pointer-events-none"></i>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            
+            <!-- Input: Area with Segmented Unit Toggle (м² ⟷ соток) -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider">3. Площадь объекта</label>
+                <!-- Unit Toggle -->
+                <div class="inline-flex p-0.5 rounded-lg bg-slate-950 border border-slate-700">
+                  <button type="button" id="calcUnitM2" onclick="setCalcUnit('m2')" class="px-2.5 py-0.5 rounded-md text-[11px] font-bold transition-all bg-blue-600 text-white shadow-sm">
+                    м²
+                  </button>
+                  <button type="button" id="calcUnitSotka" onclick="setCalcUnit('sotka')" class="px-2.5 py-0.5 rounded-md text-[11px] font-bold transition-all text-slate-400 hover:text-white">
+                    соток
+                  </button>
+                </div>
+              </div>
+              <div class="relative">
+                <input type="number" id="calcArea" placeholder="Например: 85" min="1" max="100000" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-500 font-semibold focus:ring-2 focus:ring-blue-500">
+                <span id="calcAreaUnitLabel" class="absolute right-4 top-3.5 text-xs text-slate-400 font-bold pointer-events-none">м²</span>
+              </div>
+            </div>
+
+            <!-- Input: Phone Number -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">Ваш телефон для отчета</label>
+              <div class="relative">
+                <input type="tel" id="calcPhone" placeholder="+998 (__) ___-__-__" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3.5 text-sm text-white font-semibold focus:ring-2 focus:ring-blue-500">
+                <i data-lucide="phone" class="w-4 h-4 text-slate-400 absolute right-4 top-4 pointer-events-none"></i>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Dynamic Live Estimate Preview Box -->
+          <div id="calcResultBox" class="hidden bg-slate-900/90 border border-emerald-500/40 rounded-2xl p-5 text-center transition-all animate-fade-in">
+            <span class="text-xs uppercase font-bold text-emerald-400 tracking-wider block mb-1">Предварительный диапазон рыночной цены:</span>
+            <div id="calcResultPrice" class="text-3xl font-extrabold text-white tracking-tight">$0</div>
+            <div id="calcResultPriceSub" class="text-xs text-slate-400 mt-1">~0 UZS</div>
+            <p class="text-xs text-slate-400 mt-1">Окончательная стоимость зависит от состояния ремонта, кадастра и этажности.</p>
+          </div>
+
+          <!-- Telegram CTA Button linking to @kewentor -->
+          <div class="pt-2">
+            <a id="calcTgBtn" href="https://t.me/kewentor?text=Здравствуйте!%20Хочу%20получить%20экспресс-оценку%20стоимости%20моей%20недвижимости%20в%20Ташкенте." target="_blank" rel="noopener noreferrer" class="w-full btn-touch bg-[#229ED9] hover:bg-[#1a8bc4] text-white font-extrabold rounded-2xl px-6 py-4 flex items-center justify-center gap-3 shadow-xl shadow-[#229ED9]/30 transition-all text-base sm:text-lg">
+              <i data-lucide="send" class="w-5 h-5"></i>
+              <span>Рассчитать точную стоимость в Telegram</span>
+            </a>
+          </div>
+
+          <p class="text-center text-xs text-slate-400">
+            🔒 Мы не передаем контакты третьим лицам. Оценка проводится сертифицированным риелтором Tashkent Estate.
+          </p>
+
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================== -->
+  <!-- БЛОК 6: CONTACTS & FOOTER (КОНТАКТЫ)      -->
+  <!-- ========================================== -->
+  <section id="contacts" class="py-16 sm:py-24 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="mb-12">
+        <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+          Контакты & Локация
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+          Свяжитесь с нами сегодня
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        <!-- Contact Info & Quick Form -->
+        <div class="lg:col-span-6 space-y-8">
+          
+          <!-- Contact Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            <!-- Address -->
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+              <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-3">
+                <i data-lucide="map-pin" class="w-5 h-5"></i>
+              </div>
+              <div class="text-xs font-bold text-slate-400 uppercase">Адрес офиса</div>
+              <div class="text-sm font-bold text-slate-900 mt-1">г. Ташкент, Мирабадский район, ул. Афросиаб, 14</div>
+              <div class="text-xs text-slate-500 mt-0.5">Ориентир: ст. метро «Космонавтов»</div>
+            </div>
+
+            <!-- Schedule -->
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100">
+              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3">
+                <i data-lucide="clock" class="w-5 h-5"></i>
+              </div>
+              <div class="text-xs font-bold text-slate-400 uppercase">Режим работы</div>
+              <div class="text-sm font-bold text-slate-900 mt-1">Пн–Сб: 09:00 – 20:00</div>
+              <div class="text-xs text-emerald-600 font-semibold mt-0.5 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                Заявки на сайте 24/7
+              </div>
+            </div>
+
+            <!-- Phones Box (Both Numbers Featured) -->
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 sm:col-span-2">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
+                  <i data-lucide="phone-call" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-400 uppercase">Телефоны для прямой связи:</div>
+                  <div class="text-xs text-slate-500">Отдел продаж и срочного выкупа</div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <a href="tel:+998777415004" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-blue-500 hover:shadow-md transition flex items-center justify-between group">
+                  <div>
+                    <span class="text-[11px] font-bold text-slate-400 block">Номер 1:</span>
+                    <span class="text-base font-extrabold text-slate-900 group-hover:text-blue-600">+998 77 741 50 04</span>
+                  </div>
+                  <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition">
+                    <i data-lucide="phone" class="w-4 h-4"></i>
+                  </div>
+                </a>
+
+                <a href="tel:+998777415004" class="p-3 bg-white rounded-xl border border-slate-200 hover:border-blue-500 hover:shadow-md transition flex items-center justify-between group">
+                  <div>
+                    <span class="text-[11px] font-bold text-slate-400 block">Номер 2:</span>
+                    <span class="text-base font-extrabold text-slate-900 group-hover:text-blue-600">+998 77 741 50 04</span>
+                  </div>
+                  <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition">
+                    <i data-lucide="phone" class="w-4 h-4"></i>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Instant Messengers Direct Links -->
+          <div class="flex flex-wrap gap-3">
+            <a href="https://t.me/kewentor" target="_blank" rel="noopener noreferrer" class="flex-1 min-w-[200px] btn-touch bg-[#229ED9] hover:bg-[#1a8bc4] text-white font-bold rounded-xl px-5 py-3 flex items-center justify-center gap-2.5 transition shadow-md">
+              <i data-lucide="send" class="w-5 h-5"></i>
+              <span>Telegram: @kewentor</span>
+            </a>
+            <a href="https://wa.me/998777415004" target="_blank" rel="noopener noreferrer" class="flex-1 min-w-[200px] btn-touch bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-xl px-5 py-3 flex items-center justify-center gap-2.5 transition shadow-md">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+              <span>WhatsApp Чат</span>
+            </a>
+          </div>
+
+          <!-- Quick Feedback Form -->
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
+            <h3 class="text-lg font-bold text-slate-900 mb-2">Оставьте заявку на персональный подбор</h3>
+            <p class="text-xs text-slate-500 mb-4">Наш специалист перезвонит вам в течение 10 минут и пришлет 3-5 актуальных вариантов.</p>
+            
+            <form id="contactForm" class="space-y-3">
+              <div>
+                <input type="text" id="contactName" placeholder="Ваше имя" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <input type="tel" id="contactPhone" placeholder="+998 (__) ___-__-__" required class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500">
+              </div>
+              <button type="submit" class="w-full btn-touch bg-slate-900 hover:bg-blue-600 text-white font-bold rounded-xl py-3 text-sm transition-all">
+                Отправить заявку
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+        <!-- Interactive Map Column -->
+        <div class="lg:col-span-6 flex flex-col">
+          <div class="h-[420px] lg:h-full min-h-[380px] w-full rounded-2xl overflow-hidden shadow-lg border border-slate-200 relative">
+            <div id="map" class="w-full h-full z-10"></div>
+          </div>
+          <div class="mt-3 flex items-center justify-between text-xs text-slate-500 px-2">
+            <span>📍 Локация: Ташкент, Мирабадский район</span>
+            <a href="https://yandex.uz/maps/?text=Ташкент+улица+Афросиаб+14" target="_blank" rel="noopener noreferrer" class="text-blue-600 font-bold hover:underline">
+              Открыть в Яндекс.Картах ↗
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================== -->
+  <!-- FOOTER                                     -->
+  <!-- ========================================== -->
+  <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-slate-800">
+        
+        <!-- Col 1: Brand -->
+        <div class="md:col-span-2 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white">
+              <i data-lucide="building-2" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <span class="text-lg font-extrabold text-white">TASHKENT ESTATE</span>
+              <span class="block text-[10px] text-slate-400 uppercase tracking-wider">Дома & Квадраты</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 max-w-md leading-relaxed">
+            Агентство недвижимости премиум и бизнес-класса в Ташкенте. Покупка, продажа, инвестиции, кадастровое и юридическое сопровождение сделок любой сложности.
+          </p>
+        </div>
+
+        <!-- Col 2: Navigation -->
+        <div>
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Навигация</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="#catalog" class="hover:text-white transition">Каталог недвижимости</a></li>
+            <li><a href="#services" class="hover:text-white transition">Наши услуги</a></li>
+            <li><a href="#about" class="hover:text-white transition">О компании</a></li>
+            <li><a href="#calculator" class="hover:text-white transition">Оценка недвижимости</a></li>
+            <li><a href="#contacts" class="hover:text-white transition">Контакты</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Direct Contacts -->
+        <div>
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Контакты</h4>
+          <ul class="space-y-2 text-xs">
+            <li>
+              <a href="tel:+998777415004" class="text-white hover:text-blue-400 font-bold flex items-center gap-1.5">
+                <i data-lucide="phone" class="w-3.5 h-3.5 text-emerald-400"></i>
+                +998 77 741 50 04
+              </a>
+            </li>
+            <li>
+              <a href="tel:+998777415004" class="text-white hover:text-blue-400 font-bold flex items-center gap-1.5">
+                <i data-lucide="phone" class="w-3.5 h-3.5 text-emerald-400"></i>
+                +998 77 741 50 04
+              </a>
+            </li>
+            <li class="pt-2">
+              <a href="https://t.me/kewentor" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[#229ED9] hover:underline font-semibold">
+                <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                Telegram: @kewentor
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Copyright & Disclaimer -->
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div>
+          © 2026 Tashkent Real Estate. Все права защищены.
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="#" class="hover:text-slate-300">Политика конфиденциальности</a>
+          <a href="#" class="hover:text-slate-300">Пользовательское соглашение</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- ========================================== -->
+  <!-- FLOATING ACTION BUTTON (TELEGRAM FAB)     -->
+  <!-- ========================================== -->
+  <aside class="fixed bottom-20 md:bottom-8 right-5 z-40 flex items-center group">
+    <!-- Hover Tooltip -->
+    <div class="hidden sm:flex items-center mr-3 px-3.5 py-1.5 rounded-xl bg-slate-900/95 text-white text-xs font-semibold shadow-2xl border border-slate-700/80 backdrop-blur opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap translate-x-2 group-hover:translate-x-0">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-2"></span>
+      Риелтор онлайн в Telegram
+    </div>
+
+    <!-- Pulse Wave Ring & Main Action Button -->
+    <a href="https://t.me/kewentor" target="_blank" rel="noopener noreferrer" title="Написать риелтору в Telegram" class="relative w-14 h-14 rounded-full bg-gradient-to-tr from-[#229ED9] to-[#0284c7] text-white flex items-center justify-center shadow-2xl shadow-[#229ED9]/50 hover:scale-110 active:scale-95 transition-all duration-300">
+      <!-- Pulsing Rings -->
+      <span class="pulse-ring absolute inset-0 rounded-full bg-[#229ED9] pointer-events-none"></span>
+      <span class="pulse-ring absolute -inset-1 rounded-full bg-[#229ED9]/40 pointer-events-none" style="animation-delay: 1.2s;"></span>
+      <i data-lucide="send" class="w-6 h-6 relative z-10 -translate-x-0.5 translate-y-0.5"></i>
+    </a>
+  </aside>
+
+
+  <!-- ========================================== -->
+  <!-- MOBILE STICKY BOTTOM BAR (< 768px)         -->
+  <!-- ========================================== -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-lg border-t border-slate-800 p-3 shadow-2xl">
+    <div class="grid grid-cols-2 gap-2 max-w-md mx-auto">
+      
+      <!-- Button 1: Позвонить (triggers phone options) -->
+      <button onclick="openCallSelectorModal()" class="btn-touch w-full bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 border border-slate-700 transition">
+        <i data-lucide="phone" class="w-4 h-4 text-emerald-400"></i>
+        <span>Позвонить</span>
+      </button>
+
+      <!-- Button 2: Написать в Telegram (Direct to @kewentor) -->
+      <a href="https://t.me/kewentor" target="_blank" rel="noopener noreferrer" class="btn-touch w-full bg-[#229ED9] hover:bg-[#1a8bc4] text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-lg shadow-[#229ED9]/30">
+        <i data-lucide="send" class="w-4 h-4"></i>
+        <span>В Telegram</span>
+      </a>
+
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- MODALS                                     -->
+  <!-- ========================================== -->
+
+  <!-- Modal 1: Callback Request -->
+  <div id="callbackModal" class="modal-backdrop fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 relative animate-fade-in">
+      <button data-modal-close class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-3">
+          <i data-lucide="phone-call" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-extrabold text-slate-900">Заказать обратный звонок</h3>
+        <p class="text-xs text-slate-500 mt-1">Оставьте номер, риелтор перезвонит вам в течение 10 минут</p>
+      </div>
+
+      <form id="callbackForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Ваше имя</label>
+          <input type="text" id="callbackName" required placeholder="Алишер" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Номер телефона</label>
+          <input type="tel" id="callbackPhone" required placeholder="+998 (__) ___-__-__" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500">
+        </div>
+        <button type="submit" class="w-full btn-touch bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl py-3.5 text-sm shadow-lg shadow-blue-600/30 transition">
+          Жду звонка
+        </button>
+      </form>
+
+      <div class="mt-4 pt-4 border-t border-slate-100 text-center">
+        <span class="text-xs text-slate-400 block mb-2">Или свяжитесь напрямую:</span>
+        <div class="flex justify-center gap-3 text-xs font-bold text-slate-700">
+          <a href="tel:+998777415004" class="hover:text-blue-600">+998 77 741 50 04</a>
+          <span>•</span>
+          <a href="tel:+998777415004" class="hover:text-blue-600">+998 77 741 50 04</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Object Viewing Booking -->
+  <div id="bookingModal" class="modal-backdrop fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-100 relative animate-fade-in max-h-[90vh] overflow-y-auto">
+      <button data-modal-close class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="mb-5">
+        <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Запись на просмотр</span>
+        <h3 id="bookingModalTitle" class="text-lg font-extrabold text-slate-900 mt-1 leading-snug">
+          Выбранный объект
+        </h3>
+        <div class="flex items-center gap-2 mt-1.5 text-xs text-slate-500">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-500"></i>
+          <span id="bookingModalLoc">Локация</span>
+        </div>
+      </div>
+
+      <!-- Preview Image & Price Tag -->
+      <div class="relative rounded-xl overflow-hidden mb-5 aspect-[16/8] bg-slate-100">
+        <img id="bookingModalImg" src="" alt="" class="w-full h-full object-cover">
+        <div class="absolute bottom-3 right-3 bg-slate-900/90 text-white text-xs font-bold px-3 py-1.5 rounded-lg backdrop-blur">
+          <span id="bookingModalPrice">$0</span>
+        </div>
+      </div>
+
+      <form id="bookingForm" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Ваше имя</label>
+          <input type="text" id="bookingName" required placeholder="Введите имя" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Номер телефона</label>
+          <input type="tel" id="bookingPhone" required placeholder="+998 (__) ___-__-__" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <button type="submit" class="w-full btn-touch bg-slate-900 hover:bg-blue-600 text-white font-bold rounded-xl py-3.5 text-sm transition shadow-lg">
+          Подтвердить запись
+        </button>
+      </form>
+
+      <!-- Instant Telegram Link for the object -->
+      <div class="mt-4 pt-4 border-t border-slate-100">
+        <a id="bookingTgDirectBtn" href="https://t.me/kewentor" target="_blank" rel="noopener noreferrer" class="w-full btn-touch bg-[#229ED9] hover:bg-[#1a8bc4] text-white font-bold text-xs rounded-xl py-3 flex items-center justify-center gap-2 transition">
+          <i data-lucide="send" class="w-4 h-4"></i>
+          <span>Быстро написать по объекту в Telegram</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Mobile Call Selector Modal -->
+  <div id="callSelectorModal" class="modal-backdrop fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 relative animate-fade-in text-center">
+      <button data-modal-close class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="phone-outgoing" class="w-6 h-6"></i>
+      </div>
+      <h3 class="text-lg font-bold text-slate-900 mb-1">Выберите номер для звонка</h3>
+      <p class="text-xs text-slate-500 mb-5">Наши специалисты на связи Пн–Сб с 09:00 до 20:00</p>
+
+      <div class="space-y-3">
+        <a href="tel:+998777415004" class="w-full btn-touch p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 font-extrabold text-sm flex items-center justify-between hover:bg-blue-600 hover:text-white transition group">
+          <span>+998 77 741 50 04</span>
+          <i data-lucide="phone" class="w-4 h-4 text-blue-600 group-hover:text-white"></i>
+        </a>
+
+        <a href="tel:+998777415004" class="w-full btn-touch p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 font-extrabold text-sm flex items-center justify-between hover:bg-emerald-600 hover:text-white transition group">
+          <span>+998 77 741 50 04</span>
+          <i data-lucide="phone" class="w-4 h-4 text-emerald-600 group-hover:text-white"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Wishlist / Избранное Modal -->
+  <div id="wishlistModal" class="modal-backdrop fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-100 relative animate-fade-in max-h-[90vh] flex flex-col">
+      
+      <!-- Close Button -->
+      <button data-modal-close class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="mb-5 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
+          <i data-lucide="heart" class="w-5 h-5 fill-rose-500 text-rose-500"></i>
+        </div>
+        <div>
+          <h3 class="text-xl font-extrabold text-slate-900">Избранные объекты</h3>
+          <p class="text-xs text-slate-500">Сохраненные варианты для быстрого согласования</p>
+        </div>
+      </div>
+
+      <!-- Wishlist Items List (Scrollable) -->
+      <div id="wishlistItemsContainer" class="flex-1 overflow-y-auto space-y-3 pr-1 my-2">
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <!-- Modal Footer with Telegram Export Action -->
+      <div id="wishlistFooter" class="pt-4 border-t border-slate-100 space-y-2">
+        <button id="wishlistTgBtn" onclick="sendWishlistToTelegram()" class="w-full btn-touch bg-[#229ED9] hover:bg-[#1a8bc4] text-white font-extrabold text-sm rounded-xl py-3.5 flex items-center justify-center gap-2 shadow-lg shadow-[#229ED9]/30 transition">
+          <i data-lucide="send" class="w-4 h-4"></i>
+          <span>Отправить подборку риелтору в Telegram</span>
+        </button>
+        <p class="text-center text-[11px] text-slate-400">
+          Сформируем готовый список с ценами и ссылками для мгновенного ответа
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modular Application Engine Script -->
+  <script src="script.js"></script>
+
+</body>
+</html>
